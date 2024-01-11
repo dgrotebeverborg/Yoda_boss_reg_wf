@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block navbar_brand %}Admin{% endblock %}
+{% block navbar_buttons %}
+  <a href="{{ url_for('main.logout') }}" class="btn btn-dark">Logout</a>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_faculties') }}">Faculties</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.view_applications') }}">Applications</a>
+    </li>
+  <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_users') }}">Users</a>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <!-- Additional content can be added here -->
+    </div>
+{% endblock %}

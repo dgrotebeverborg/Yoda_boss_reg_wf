@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block navbar_buttons %}
+  <a href="{{ url_for('main.logout') }}" class="btn btn-dark">Logout</a>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_faculties') }}">Faculties</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.view_applications') }}">Applications</a>
+    </li>
+  <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_users') }}">Users</a>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+<h1>Manage Faculties</h1>
+
+<!-- Add Faculty Form -->
+<form action="{{ url_for('main.add_faculty') }}" method="post">
+    <input type="text" name="name" placeholder="Faculty Name">
+    <button type="submit">Add Faculty</button>
+</form>
+
+<!-- List of Faculties -->
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    {% for faculty in faculties %}
+    <tr>
+        <td>{{ faculty.name }}</td>
+        <td>
+            <!-- Edit Faculty Form -->
+            <form action="{{ url_for('main.edit_faculty', faculty_id=faculty.id) }}" method="post">
+                <input type="text" name="name" placeholder="New Faculty Name">
+                <button type="submit">Edit</button>
+            </form>
+            <!-- Delete Faculty Form -->
+            <form action="{{ url_for('main.delete_faculty', faculty_id=faculty.id) }}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

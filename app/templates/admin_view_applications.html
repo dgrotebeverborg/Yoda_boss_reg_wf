@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block navbar_buttons %}
+  <a href="{{ url_for('main.logout') }}" class="btn btn-dark">Logout</a>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_faculties') }}">Faculties</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.view_applications') }}">Applications</a>
+    </li>
+  <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('main.admin_users') }}">Users</a>
+    </li>
+
+{% endblock %}
+
+
+
+{% block content %}
+<h1>View Applications</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Applicant</th>
+        <th>Faculty</th>
+        <th>Status</th>
+        <th>Approved By</th>
+        <th>Approved At</th>
+        <th>Ac<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>tions</th>
+    </tr>
+    {% for application in applications %}
+    <tr>
+        <td>{{ application.id }}</td>
+        <td>{{ application.first_name,  application.last_name}}</td>
+        <td>{{ application.name }}</td>
+        <td>{{ application.status }}</td>
+        <td>{{ application.approved_by_user.username if application.approved_by_user else 'N/A' }}</td>
+        <td>{{ application.approved_at }}</td>
+        <td>
+            {% if application.status == 'pending' %}
+            <a href="{{ url_for('main.approve_application', application_id=application.id) }}">Approve</a>
+            <a href="{{ url_for('main.reject_application', application_id=application.id) }}">Reject</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

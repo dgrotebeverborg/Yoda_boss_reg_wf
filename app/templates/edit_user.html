@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit User</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select class="form-control" id="role" name="role" required>
+                <option value="ADMIN" {% if user.role == 'ADMIN' %} selected {% endif %}>Admin</option>
+                <option value="APPROVER" {% if user.role == 'APPROVER' %} selected {% endif %}>Approver</option>
+                <!-- Add other roles as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="faculty_id">Faculty:</label>
+            <select class="form-control" id="faculty_id" name="faculty_id">
+                {% for faculty in faculties %}
+                <option value="{{ faculty.id }}" {% if user.faculty_id == faculty.id %} selected {% endif %}>{{ faculty.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Update User</button>
+    </form>
+</div>
+{% endblock %}

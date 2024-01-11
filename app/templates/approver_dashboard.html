@@ -1,0 +1,55 @@
+<!-- approver_dashboard.html in the templates folder -->
+{% extends 'base.html' %}
+{% block navbar_buttons %}
+<li class="nav-item">
+    <a href="{{ url_for('main.logout') }}" class="btn btn-dark">Logout</a>
+    <a class="btn btn-dark" href="{{ url_for('main.approver') }}">Pending</a>
+    <a class="btn btn-dark" href="/approved">Approved</a>
+    <a class="btn btn-dark" href="/all-applications">All Applications</a>
+
+</li>
+<!-- More buttons specific to the dashboard -->
+{% endblock %}
+
+{% block yellow_section_content %}
+<h1>Approver Dashboard</h1>
+<!-- Add any additional content for the dashboard here -->
+{% if current_user.faculty %}
+    <p>Faculty: {{ current_user.faculty.name }}</p>
+{% else %}
+    <p>Approving for all faculties</p>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Faculty</th>
+            <th>Email</th>
+            <!-- Add other relevant fields -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in applications %}
+        <tr>
+            <td>{{ app.id }}</td>
+            <td>{{ app.first_name }}</td>
+            <td>{{ app.last_name }}</td>
+            <td>{{ app.faculty }}</td>
+            <td>{{ app.email }}</td>
+            <!-- Add other relevant fields -->
+            <td>
+                <a href="{{ url_for('main.approve_application', application_id=app.id) }}">Approve</a> |
+                <a href="{{ url_for('main.reject_application', application_id=app.id) }}">Reject</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

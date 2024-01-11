@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block navbar_buttons %}
+<li class="nav-item">
+    <a href="{{ url_for('main.logout') }}" class="btn btn-dark">Logout</a>
+    <a class="btn btn-dark" href="{{ url_for('main.approver') }}">Pending</a>
+    <a class="btn btn-dark" href="/approved">Approved</a>
+    <a class="btn btn-dark" href="/all-applications">All Applications</a>
+
+</li>
+<!-- More buttons specific to the dashboard -->
+{% endblock %}
+
+{% block yellow_section_content %}
+<h1>Approver Dashboard</h1>
+<!-- Add any additional content for the dashboard here -->
+{% if current_user.faculty %}
+    <p>Faculty: {{ current_user.faculty.name }}</p>
+{% else %}
+    <p>Approving for all faculties</p>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Approved Applications</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Faculty</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Approved By</th>
+                <th>Approved At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.first_name }} {{ application.last_name }}</td>
+                <td>{{ application.faculty }}</td>
+                <td>{{ application.department }}</td>
+                <td>{{ application.email }}</td>
+                <td>{{ application.approved_by }}</td>
+                <td>{{ application.approved_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

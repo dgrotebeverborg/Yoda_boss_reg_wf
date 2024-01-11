@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="application-form">
+    <form method="post" action="{{ url_for('main.apply') }}">
+        <div class="form-group">
+            <label for="first_name">First name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+
+      <div class="form-group">
+        <label for="faculty_id">Faculty:</label>
+        <select name="faculty_id" id="faculty" required>
+        {% for faculty in faculties %}
+        <option value="{{ faculty.id }}">{{ faculty.name }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+        <div class="form-group">
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department" required>
+        </div>
+
+        <div class="form-group">
+            <label for="solisid">SolisID:</label>
+            <input type="text" id="solisid" name="solisid" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="submit-button">Send application</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
