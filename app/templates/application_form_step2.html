@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Step Indicator -->
+<div class="container mt-4">
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <a class="nav-link" href="#">1. Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">2. Yoda Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">3. Summary & Confirmation</a>
+        </li>
+    </ul>
+</div>
+
+<div class="application-form">
+    <form method="post" action="{{ url_for('main.apply_step2') }}">
+        <!-- Radio buttons for main choice -->
+        <div class="form-group bg-light-grey" style="background-color: #f2f2f2; padding: 10px;">
+            <b>What type of project?</b>
+            <p></p>
+            <div>
+                <label>
+                    <input type="radio" name="mainChoice" value="ResearchProject" onchange="updateFormOptions()" checked>
+                    Research Project
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="mainChoice" value="AcademicCourse" onchange="updateFormOptions()">
+                    Academic Course
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="mainChoice" value="bama" onchange="updateFormOptions()">
+                    BA/MA Thesis data
+                </label>
+            </div>
+        </div>
+
+        <div id="researchProjectOptions" style="display: none;">
+            <!-- Additional choices for Research Project -->
+            <div class="form-group bg-light-grey" style="background-color: #f2f2f2; padding: 10px;">
+                <b>Is it a New Research Project or would you like to make changes to an Existing Research Project?</b>
+                <p></p>
+                <label>
+                    <input type="radio" name="researchType" value="NewResearchProject" onchange="updateFormOptions()">
+                    New Research Project
+                </label>
+                <label>
+                    <input type="radio" name="researchType" value="ExistingResearchProject" onchange="updateFormOptions()">
+                    Changes to an Existing Research Project
+                </label>
+            </div>
+
+            <!-- Fields for new research project -->
+            <div id="newResearchProjectOptions" style="display: none; background-color: #89CFF0; padding: 10px; margin-top: 10px;">
+                <label>
+                    <input type="radio" name="researchType" value="NewResearchProdject" onchange="updateFormOptions()">
+                    New Research Projectd
+                </label>
+            </div>
+
+            <!-- Fields for existing research project -->
+            <div id="existingResearchProjectOptions" style="display: none;">
+                <!-- Insert fields specific to an existing research project here -->
+            </div>
+        </div>
+
+        <div id="academicCourseOptions" style="display: none;">
+            <!-- Insert fields specific to an academic course here -->
+        </div>
+
+        <!-- The original "Next Step" button -->
+        <div class="form-group">
+            <button type="submit" class="submit-button">To step 3</button>
+        </div>
+    </form>
+
+    <form action="{{ url_for('main.apply_reset') }}" method="get">
+        <button type="submit">Reset Session</button>
+    </form>
+</div>
+
+<script>
+function updateFormOptions() {
+    var selectedOption = document.querySelector('input[name="mainChoice"]:checked').value;
+
+    // Show or hide the Research Project options based on the selected option
+    var researchProjectOptions = document.getElementById('researchProjectOptions');
+    researchProjectOptions.style.display = selectedOption === 'ResearchProject' ? 'block' : 'none';
+
+    // Show or hide the Academic Course options based on the selected option
+    var academicCourseOptions = document.getElementById('academicCourseOptions');
+    academicCourseOptions.style.display = selectedOption === 'AcademicCourse' ? 'block' : 'none';
+
+    // Hide the new and existing research project options by default
+    var newResearchProjectOptions = document.getElementById('newResearchProjectOptions');
+    var existingResearchProjectOptions = document.getElementById('existingResearchProjectOptions');
+    newResearchProjectOptions.style.display = 'none';
+    existingResearchProjectOptions.style.display = 'none';
+
+    // Only if the Research Project is selected, determine which additional options to show
+    if (selectedOption === 'ResearchProject') {
+        // Check if any researchType radio is selected
+        var researchTypeRadio = document.querySelector('input[name="researchType"]:checked');
+        if (researchTypeRadio) {
+            var researchTypeSelected = researchTypeRadio.value;
+            // Show or hide the new and existing research project options based on the selected research type
+            newResearchProjectOptions.style.display = researchTypeSelected === 'NewResearchProject' ? 'block' : 'none';
+            existingResearchProjectOptions.style.display = researchTypeSelected === 'ExistingResearchProject' ? 'block' : 'none';
+        }
+    }
+}
+
+// Add event listeners for the mainChoice radio buttons to update form options when changed
+document.querySelectorAll('input[name="mainChoice"]').forEach(function(radio) {
+    radio.addEventListener('change', updateFormOptions);
+});
+
+// Add event listeners for the researchType radio buttons within the researchProjectOptions section
+document.querySelectorAll('input[name="researchType"]').forEach(function(radio) {
+    radio.addEventListener('change', updateFormOptions);
+});
+
+// Initialize the form options on page load
+document.addEventListener('DOMContentLoaded', updateFormOptions);
+</script>
+
+{% endblock %}
+
+

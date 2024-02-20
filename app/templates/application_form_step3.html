@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<!-- Step Indicator -->
+<div class="container mt-4">
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <a class="nav-link" href="#">1. Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">2. Yoda Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">3. Summary & Confirmation</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="application-form">
+ <form method="post" action="{{ url_for('main.apply') }}">
+ <div class="form-group bg-light-grey" >
+  <p>For what purpose do you need Yoda?</p>
+  <div>
+    <label for="research_project">
+        <input type="radio" id="research_project" name="yoda_purpose" value="research_project" required>
+    Research Project
+    </label>
+
+  </div>
+  <div>
+      <label for="academic_course">
+    <input type="radio" id="academic_course" name="yoda_purpose" value="academic_course" required>
+    Academic Course
+      </label>
+
+  </div>
+
+</div>
+
+ <div class="form-group bg-light-red" >
+  <p>IMPORTANT ANNOUNCEMENT:</p>
+  <p>In many cases YoDa storage project folders are created by the course coordinator in batch for all students enrolled in the Bachelor/Master course. Please make sure that no such folder has already been created before filling out the form below. We will always check with your coordinator before creating the folder.
+ </div>
+
+
+
+
+
+<div class="form-group">
+    <button type="submit" class="submit-button">To step 3</button>
+</div>
+
+ <form action="{{ url_for('main.apply_reset') }}" method="get">
+<button type="submit">Reset Session</button>
+</form>
+
+</div>
+
+{% endblock %}

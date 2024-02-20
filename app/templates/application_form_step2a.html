@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<!-- Step Indicator -->
+<div class="container mt-4">
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <a class="nav-link" href="#">1. Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">2. Yoda Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">3. Summary & Confirmation</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="application-form">
+
+ <div class="form-group bg-light-grey" >
+  <p>For what purpose do you need Yoda?</p>
+  <div>
+    <label for="research_project">
+        <input type="radio" id="research_project" name="yoda_purpose" value="research_project" required>
+    Research Project
+    </label>
+
+  </div>
+  <div>
+      <label for="academic_course">
+    <input type="radio" id="academic_course" name="yoda_purpose" value="academic_course" required>
+    Academic Course
+      </label>
+  </div>
+  <div>
+      <label for="thesis_data">
+    <input type="radio" id="thesis_data" name="yoda_purpose" value="thesis_data" required>
+    BA/MA Thesis data
+      </label>
+  </div>
+</div>
+
+
+
+
+</div>
+
+{% endblock %}

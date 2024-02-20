@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<!-- Step Indicator -->
+<div class="container mt-4">
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">1. Personal Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">2. Yoda Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">3. Summary & Confirmation</a>
+        </li>
+    </ul>
+</div>
+
+<div class="application-form" >
+    <form method="post" action="{{ url_for('main.apply') }}">
+
+    <div class="form-group bg-light-grey" >
+
+    <label>What's your role at the UU? *</label>
+    <div>
+        <label for="employee">
+        <input type="radio" id="employee" name="role" value="Employee" onchange="showExtraFields()" checked>
+        Employee</label>
+    </div>
+    <div>
+        <label for="student">
+        <input type="radio" id="student" name="role" value="Student" onchange="showExtraFields()">
+        Student</label>
+    </div>
+    </div>
+
+    <hr>
+
+
+        <div class="form-group">
+            <label for="first_name">First name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+
+      <div class="form-group">
+        <label for="faculty_id">Faculty:</label>
+        <select name="faculty_id" id="faculty" required>
+        {% for faculty in faculties %}
+        <option value="{{ faculty.id }}">{{ faculty.name }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+        <div class="form-group">
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department" required>
+        </div>
+
+        <div class="form-group">
+            <label for="solisid">SolisID:</label>
+            <input type="text" id="solisid" name="solisid" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <!-- Hidden fields for Student role -->
+        <hr>
+        <div id="extra-fields" style="display:none;">
+            <div class="form-group">
+                <label for="supervisor">Who is your Supervisor or Tutor? *</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+            </div>
+            <div class="form-group">
+                <label for="supervisor_email">What's the email address of your supervisor or tutor? *</label>
+                <input type="email" id="supervisor_email" name="supervisor_email" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="submit-button">To step 2</button>
+        </div>
+        <script>
+         function showExtraFields() {
+            var role = document.querySelector('input[name="role"]:checked').value;
+            var extraFields = document.getElementById("extra-fields");
+            var supervisor = document.getElementById("supervisor");
+            var supervisorEmail = document.getElementById("supervisor_email");
+
+            if (role === "Student") {
+                extraFields.style.display = "block";
+                supervisor.setAttribute("required", "");
+                supervisorEmail.setAttribute("required", "");
+            } else {
+                extraFields.style.display = "none";
+                supervisor.removeAttribute("required");
+                supervisorEmail.removeAttribute("required");
+            }
+        }
+        window.onload = showExtraFields;
+        </script>
+
+    <form action="{{ url_for('main.apply_reset') }}" method="get">
+    <button type="submit">Reset Session</button>
+    </form>
+    </form>
+</div>
+{% endblock %}
+
+

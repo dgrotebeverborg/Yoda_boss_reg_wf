@@ -15,7 +15,7 @@ from functools import wraps
 main = Blueprint('main', __name__)
 
 from flask import flash
-
+from flask import session
 def role_required(role):
     def decorator(f):
         @wraps(f)
@@ -27,58 +27,115 @@ def role_required(role):
     return decorator
 
 
-
 @main.route('/apply', methods=['GET', 'POST'])
 def apply():
+
+    # Initialize the step if it's not already in the session
+    if 'step' not in session:
+        session['step'] = '1'
+        print(session['step'], request.form, request.method )
     faculties = Faculty.query.all()  # Query all faculties
+    print('kk')
     if request.method == 'POST':
-        # Data processing
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        # faculty = request.form['faculty']
-        department = request.form['department']
-        solisid = request.form['solisid']
-        email = request.form['email']
-        faculty_id = request.form.get('faculty_id')
+        print('test1', request.form, session['step']  )
 
-        # Data validation (basic example)
-        if not first_name or not last_name:
-            flash('Please fill out all required fields.', 'error')
-            return render_template('application_form.html', faculties=faculties)  # Pass faculties here
+        # Assume each step's data is validated and stored before moving to the next step
+        if session['step'] == '1' or session['step'] == 1:
+            # Process data from step 1
+            # ...
+            print('ik snap het niet')
+            role = request.form['role']
+            print(role, 'bla')
+            if role == 'Student':
+                # Process the additional fields for students
+                supervisor = request.form['supervisor']
+                supervisor_email = request.form['supervisor_email']
+                # Save the data to the database or perform further processing
+                session['step'] = '3'
+            else:
+            # After processing, increment step and redirect to the same route
+                session['step'] = '2'
 
-        # Save to database (placeholder code)
-        new_application = Application(
-            first_name=first_name,
-            last_name=last_name,
-            # faculty=faculty,
-            faculty_id=faculty_id,
-            department=department,
-            solisid=solisid,
-            email=email
-        )
+            print (session['step'])
+            return redirect(url_for('main.apply'))
 
-        try:
-            db.session.add(new_application)
-            db.session.commit()
-            flash('Application submitted successfully!', 'success')
-        except sqlalchemy.exc.IntegrityError as e:
-            db.session.rollback()
-            app.logger.error(f'Integrity Error: {e}')  # Log the specific error
-            flash('An error occurred. Please try again.', 'error')
+        elif session['step'] == '2' or session['step'] == 2:
+            # Process data from step 2
+            # ...
+            print('ik ben in stap 2')
+            # After processing, increment step and redirect to the same route
+            session['step'] = '4'
+            return redirect(url_for('main.apply'))
 
-        return redirect(url_for('main.apply'))
+        elif session['step'] == '3' or session['step'] == 3:
+            # Process data from step 2
+            # ...
+            print('ik ben in stap 3')
+            # After processing, increment step and redirect to the same route
+            session['step'] = '4'
+            return redirect(url_for('main.apply'))
+
+        elif session['step'] == '4':
+            # Final step: process the data and save the application
+            # ...
+
+            # After saving, reset step and redirect to submission confirmation
+            session.pop('step', None)  # Clear the step from the session
+            return redirect(url_for('application_submitted'))
+
+    # Render the template for the current step
+    return render_template(f'application_form_step{session["step"]}.html', faculties=faculties)
 
 
-        # Send email notification (placeholder code)
-        # send_confirmation_email(first_name, last_name, ...)
+@main.route('/apply_step2', methods=['GET', 'POST'])
+def apply_step2():
+    # Retrieve the main choice (ResearchProject, AcademicCourse, etc.)
+    main_choice = request.form.get('mainChoice')
 
-        # Redirect to a new page or display success message
-        flash('Your application has been submitted successfully!', 'success')
-        return redirect(url_for('application_submitted'))
+    if main_choice == 'ResearchProject':
+        # Retrieve the type of research project
+        print('res')
+        research_type = request.form.get('researchType')
+
+        if research_type == 'NewResearchProject':
+            print('new')
+            # Process form fields for a new research project
+            yoda_folder = request.form.get('yodaFolder')
+            access_rights = request.form.get('accessRights')
+            change_rights_others = request.form.get('changeRightsOthers', 'No')  # 'No' is default if unchecked
+
+            # Perform your data processing here...
+            # For example, save the data to the database
+
+        elif research_type == 'ExistingResearchProject':
+            # Process form fields for changes to an existing research project
+            # ... Similar to above, handle the specific fields related to existing projects
+            bla = 'bla'
+
+        elif main_choice == 'AcademicCourse':
+            # Process form fields for an academic course
+            # ...
+            bla = 'bla'
+
+    # Additional processing for other main choices if necessary
+
+    # After processing, redirect to the next step
+    # You might want to pass some data to the next step, such as a confirmation message or ID
+    flash('Step 2 completed successfully.', 'success')
+    return redirect(url_for('main.next_step'))
 
 
-    # GET request
-    return render_template('application_form.html', faculties=faculties)
+@main.route('/next_step')
+def next_step():
+    # Handle the next step after form submission
+    pass
+
+# Reset the application form and start over
+@main.route('/apply/reset')
+def apply_reset():
+    print('reset')
+    session.pop('step', None)  # Clear the step from the session
+    return redirect(url_for('main.apply'))
 
 @main.route('/approver')
 @login_required

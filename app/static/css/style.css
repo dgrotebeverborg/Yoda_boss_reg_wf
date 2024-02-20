@@ -17,7 +17,7 @@ body {
 }
 
 .application-form {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     background: #fff;
     padding: 20px;
@@ -83,3 +83,16 @@ th, td {
     padding: 10px;
     text-align: left;
 }
+
+ .bg-light-grey {
+        background-color: lightgrey;
+        padding: 10px; /* Optional: add padding for better appearance */
+        border-radius: 5px; /* Optional: add border radius for rounded corners */
+    }
+
+ .bg-light-red {
+        background-color: #FFCCCB;
+        color: red;
+        padding: 10px; /* Optional: add padding for better appearance */
+        border-radius: 5px; /* Optional: add border radius for rounded corners */
+    }
